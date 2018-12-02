@@ -4,3 +4,5 @@ version = "0.1.0"
 authors = ["Simon Cruanes <simon.cruanes.2007@m4x.org>"]
 
 [dependencies]
+
+fxhash = "0.2.1"

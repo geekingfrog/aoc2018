@@ -1,7 +1,7 @@
 
 use std::fs::File;
 use std::io::{BufRead,BufReader};
-use std::collections::HashSet;
+use fxhash::FxHashSet;
 
 fn parse_ints(arg: &str) -> Vec<i32> {
     let file = File::open(arg).unwrap();
@@ -17,7 +17,7 @@ fn parse_ints(arg: &str) -> Vec<i32> {
 }
 
 fn find_first_repeating(ops: &[i32]) -> i32 {
-    let mut set = HashSet::new();
+    let mut set = FxHashSet::default();
 
     let mut freq = 0;
     for op in ops.iter().cycle() {
