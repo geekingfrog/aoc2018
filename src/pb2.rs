@@ -19,7 +19,10 @@ impl ID {
         ID(v)
     }
 
-    /// Split into even elements, and odd elements
+    /// Split into even elements, and odd elements.
+    ///
+    /// This is useful because if two IDs differ by only 1 char, at least
+    /// one of their event/odd slices will coincide, so we can use a hashmap.
     fn split(&self) -> (ID, ID) {
         let mut v1 = Vec::new();
         let mut v2 = Vec::new();
@@ -80,6 +83,7 @@ fn parse(arg: &str) -> Vec<ID> {
 
 const N : usize = 26;
 
+/// Map from an ascii char, to its number of occurrences
 struct Counts([u8;N]);
 
 impl Counts {
@@ -124,8 +128,11 @@ impl IDSet {
     }
 }
 
-// find two IDs that only differ in one position, and also return
-// their common part
+/// find two IDs that only differ in one position, and also return
+/// their common part.
+///
+/// We keep a multimap from half-slices to their owner IDs, so
+/// we can efficiently find collisions
 fn find_ids_close_by_1(ops: &Vec<ID>) -> (ID,ID,String) {
     let mut tbl_even : FxHashMap<ID,IDSet> = FxHashMap::default();
     let mut tbl_odds : FxHashMap<ID,IDSet> = FxHashMap::default();
