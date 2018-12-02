@@ -43,29 +43,25 @@ impl ID {
 
     /// If distance from self to other is `1`, return the common part
     fn at_distance_1(&self, other: &Self) -> Option<Self> {
-        let mut equal_so_far = true;
-        let mut i_diff = 0;
+        let mut i_diff = None;
 
         if self.len() != other.len() { return None }
 
         for i in 0 .. self.len() {
             if self[i] != other[i] {
-                if equal_so_far {
-                    i_diff = i;
-                    equal_so_far = false;
-                } else {
+                if let Some(_) = i_diff {
                     return None;  // 2 distinct elements
+                } else {
+                    i_diff = Some(i);
                 }
             }
         }
 
-        if equal_so_far {
-            None // same
-        } else {
+        i_diff.map(|i| {
             let mut v = self.0.clone();
-            v.remove(i_diff);
-            Some(ID(v))
-        }
+            v.remove(i);
+            ID(v)
+        })
     }
 }
 
